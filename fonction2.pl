@@ -9,9 +9,9 @@ sub modifAdresse{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     
     print "Voici la liste de tous les proprietaire enregistres\n";
-    my $requete = $dbh->prepare("SELECT DISTINCT * FROM Proprietaire");
-    my $select = $requete->execute();
-    while(my $ref = $requete->fetchrow_hashref()){  # affiche résulat de la requête SQL
+    my $selectProprio = $dbh->prepare("SELECT DISTINCT * FROM Proprietaire");
+    my $requete = $selectProprio->execute();
+    while(my $ref = $selectProprio->fetchrow_hashref()){  # affiche résulat de la requête SQL
 	print "$ref->{'nom'} $ref->{'prenom'} $ref->{'rue'} $ref->{'codepostal'} \n";
     }
     print "\n";
@@ -21,18 +21,18 @@ sub modifAdresse{
     print "Indiquer le prenom du propriétaire\n";
     my $prenom =<>; chomp($prenom);
     my $verif = $dbh->prepare("SELECT Rue, CodePostal FROM Proprietaire WHERE Nom = '$nom' AND Prenom = '$prenom'");
-    my $select2 = $verif->execute();
+    my $requete2 = $verif->execute();
 
     
     print "Indiquer la nouvelle rue de $prenom $nom\n";
     my $newRue = <>; chomp($newRue);
     print "Indiquer le nouveau code postal de $prenom $nom\n";
     my $newCodePostal = <>; chomp($newCodePostal);
-    my $requete2 = $dbh->do("UPDATE Proprietaire SET Rue = '$newRue', CodePostal ='$newCodePostal' WHERE Nom = '$nom' AND Prenom = '$prenom'");
+    my $requete3 = $dbh->do("UPDATE Proprietaire SET Rue = '$newRue', CodePostal ='$newCodePostal' WHERE Nom = '$nom' AND Prenom = '$prenom'");
 
     print"Modification effectuee\n";
 
-    $requete->finish();
+    $selectProprio->finish();
     $verif->finish();
     $dbh->disconnect();
     

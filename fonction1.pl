@@ -3,9 +3,11 @@
 use strict;
 use DBI;
 #connect
-my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-#execute INSERT query
+
 sub ajoutAnimal{
+    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
+
+    
     print "Entrer l' id de l'animal\n";
     my $id=<>; chomp($id);
     print "Entrer le nom de l'animal $id\n";
@@ -28,8 +30,11 @@ sub ajoutAnimal{
     my $vaccin3=<>; chomp($vaccin3);
     my $requete = $dbh->do("INSERT INTO Animal VALUES($id,'$nom','$type','$couleur','$sexe',$anneeNaissance)");
     my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,'$sterilise','$vaccin1','$vaccin2','$vaccin3')"); 
+
+    print"Ajout d'animal effectué";
+    $dbh->disconnect();
+
+
 }
 
 ajoutAnimal();
-
-$dbh->disconnect();

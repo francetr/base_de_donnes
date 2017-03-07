@@ -3,13 +3,23 @@
 use strict;
 use DBI;
 #connect
-my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
+
 #execute INSERT query
 sub afficheChat{
-    print "Voici la liste de tous les chats enregistres";
-    my $requete = $dbh->do("Select * From Animal, Suivie WHERE Animal = 'Chat' OR Animal ='chat'"); 
+
+    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
+    print "Voici la liste de tous les chats enregistrés";
+    my $selectChat = $dbh->prepare("Select * From Animal, Suivie WHERE Animal = 'Chat' OR Animal ='chat'");
+    my $requete = $selectChat->execute();
+    while(my $ref= $selectChat->fetchrow_hashref()){
+
+	print "$ref->{'idanimal'} $ref->{'nomanimal'} $ref->{'couleur'} $ref->{'sexe'} $ref->{'anneenaissance'} $ref->{'sterilise'} $ref->{'vaccin1'} $ref->{'vaccin2'} $ref->{'vaccin3'}";
+    }
+
+    $selectChat->finish();
+    $dbh->disconnect();
+
 }
 
 afficheChat();
 
-$dbh->disconnect();
