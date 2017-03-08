@@ -31,7 +31,7 @@ sub ajoutAnimal{
     my $requete = $dbh->do("INSERT INTO Animal VALUES($id,'$nom','$type','$couleur','$sexe',$anneeNaissance)");
     my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,'$sterilise','$vaccin1','$vaccin2','$vaccin3')"); 
 
-    print"Ajout d'animal effectué";
+    print"Ajout d'animal effectué\n";
     $dbh->disconnect();
 
 
