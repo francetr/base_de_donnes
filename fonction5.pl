@@ -1,10 +1,7 @@
-
 #!/usr/bin/perl
 use strict;
 use DBI;
-#connect
 
-#execute INSERT query
 sub afficheSelectionUtilisateur{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     

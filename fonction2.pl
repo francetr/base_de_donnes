@@ -4,7 +4,7 @@ use DBI;
 #connect
 
 #execute INSERT query
-sub modifAdresse{
+sub modifierAdresse{
 
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     
@@ -38,4 +38,4 @@ sub modifAdresse{
     
 }
 
-modifAdresse();
+modifierAdresse();
