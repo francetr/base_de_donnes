@@ -12,7 +12,7 @@ sub modifierAdresse{
     my $selectProprio = $dbh->prepare("SELECT DISTINCT * FROM Proprietaire");
     my $requete = $selectProprio->execute();
     while(my $ref = $selectProprio->fetchrow_hashref()){  # affiche résulat de la requête SQL
-	print "$ref->{'nom'} $ref->{'prenom'} $ref->{'rue'} $ref->{'codepostal'} \n";
+	print "Nom : $ref->{'nom'}  Prénom : $ref->{'prenom'}  Rue : $ref->{'rue'}  Code Postal:  $ref->{'codepostal'} \n";
     }
     print "\n";
     
