@@ -8,39 +8,39 @@ my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'
 while (1){
     afficheMenu();
     my $choix = <>;
-    if($choix==1){
+    if($choix eq 1){
 	ajoutAnimal();
     }
-    elsif ($choix==2){
+    elsif ($choix eq 2){
 	modifierAdresse();
     }
-    elsif ($choix==3){
+    elsif ($choix eq 3){
 	ajoutVaccin();
     }
-    elsif ($choix==4){
+    elsif ($choix eq 4){
 	afficheChat();
     }
-    elsif ($choix==5){
+    elsif ($choix eq 5){
 	afficheSelectionUtilisateur();
     }
-    elsif ($choix==6){
+    elsif ($choix eq 6){
 	afficheMoyenneAnimaux();
     }
-    elsif ($choix==7){
+    elsif ($choix eq 7){
 	afficheSuperieurAnimaux();
     }
-    elsif ($choix==8){
+    elsif ($choix eq 8){
 	afficheCommuneProprio();
     }
-    elsif ($choix==9){
+    elsif ($choix eq 9){
 	afficheCommuneAnimaux();
     }
     else{
+	print"Arrêt du programme\n";
 	last;
     }
 
 }
-
 
 sub afficheMenu{
     print "------  Menu Principal  ------\n\n";
@@ -55,11 +55,7 @@ sub afficheMenu{
     print "Taper 9 pour afficher le nombre total d'animaux par commune chats enregistres\n";
 }
 
-
 sub ajoutAnimal{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-
-    
     print "Entrer l' id de l'animal\n";
     my $id=<>; chomp($id);
     print "Entrer le nom de l'animal avec l'id $id\n";
@@ -87,7 +83,7 @@ sub ajoutAnimal{
     print "Le propriétaire est-il enregistré dans la base?(o/n)\n";
     my $rep2=<>; chomp($rep2);
     
-    if ($rep2="o" or $rep2="O"){
+    if ($rep2 eq "o" or $rep2 eq "O"){
 	print "Donner le nom du propriétaire de l'animal avec id $id\n";
 	$nomProprio=<>; chomp($nomProprio);
 	print "Donner le prénom du propriétaire de l'animal avec id $id\n";
@@ -96,13 +92,13 @@ sub ajoutAnimal{
 	my $selectTel = $dbh->prepare("SELECT DISTINCT Nom, Prenom, Telephone FROM Proprietaire WHERE Nom = '$nomProprio' AND Prenom='$prenomProprio'");
 	$telephone = $selectTel->execute();
 	while(my $ref= $selectTel->fetchrow_hashref()){
-	    print "Nom :  $ref->{'nom'}   Prenom : $ref->{'prenom'}  Telephone : $ref->{'telephone'}\n";
-	    $telephone=$ref->{'telephone'};
+	    print "Nom :  $ref->{'nom'}   Prénom : $ref->{'prenom'}  Téléphone : $ref->{'telephone'}\n";
+	    $telephone = $ref->{'telephone'};
 	}
 	$selectTel->finish();
     }
     
-    elsif($rep2="n" or $rep2="N"){
+    elsif($rep2 eq "n" or $rep2 eq "N"){
 	print "Donner le nom du propriétaire de l'animal avec l'id $id\n";
 	$nomProprio=<>; chomp($nomProprio);
 	print "Donner le prénom du propriétaire de l'animal avec l'id $id\n";
@@ -120,18 +116,12 @@ sub ajoutAnimal{
     print "Indiquer le numéros de téléphone du propriétaire de l'animal a l'$id\n";
     my $telephone=<>; chomp($telephone);
     my $requete = $dbh->do("INSERT INTO Animal VALUES($id,'$nom','$type','$sexe','$couleur','$sterilise',$anneeNaissance,$telephone)");
-    my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,$vaccin1,$vaccin2,$vaccin3)"); 
-
-    
+    my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,$vaccin1,$vaccin2,$vaccin3)");    
     print"Ajout d'animal effectué\n";
-    $dbh->disconnect();
 }
 
-sub modifierAdresse{
-
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    
-    print "Voici la liste de tous les proprietaire enregistres\n";
+sub modifierAdresse{    
+    print "Voici la liste de tous les propriétaires enregistrés\n";
     my $selectProprio = $dbh->prepare("SELECT DISTINCT * FROM Proprietaire");
     my $requete = $selectProprio->execute();
     while(my $ref = $selectProprio->fetchrow_hashref()){  # affiche résulat de la requête SQL
@@ -143,9 +133,9 @@ sub modifierAdresse{
     my $nom=<>; chomp($nom);
     print "Indiquer le prenom du propriétaire\n";
     my $prenom =<>; chomp($prenom);
+    
     my $verif = $dbh->prepare("SELECT Rue, CodePostal FROM Proprietaire WHERE Nom = '$nom' AND Prenom = '$prenom'");
     my $requete2 = $verif->execute();
-
     
     print "Indiquer la nouvelle rue de $prenom $nom\n";
     my $newRue = <>; chomp($newRue);
@@ -157,15 +147,10 @@ sub modifierAdresse{
 
     $selectProprio->finish();
     $verif->finish();
-    $dbh->disconnect();
-    
 }
 
 
 sub ajoutVaccin{
-
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-
     print "Voici la liste des animaux enregistrés dans la base\n";
     my $selectAnimaux = $dbh->prepare("SELECT IdAnimal, NomAnimal, TypeAnimal FROM Animal\n");
     my $requete = $selectAnimaux->execute();
@@ -181,17 +166,17 @@ sub ajoutVaccin{
     print "Quel vaccin voulez-vous modifier(1, 2 ou 3)?\n";
     my $rep=<>; chomp($rep);
     my $vaccin;
-    if ($rep == 1){
+    if ($rep eq 1){
 	print "Indiquer l'annee du vaccin1\n";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin1 = '$vaccin'");
     }
-    elsif ($rep == 2){
+    elsif ($rep eq 2){
 	print "Indiquer l'annee du vaccin2\n";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin2 = '$vaccin'");
     }
-    elsif ($rep ==3){
+    elsif ($rep eq3){
 	print "Indiquer l'annee du vaccin3";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin2 = '$vaccin'");
@@ -199,13 +184,10 @@ sub ajoutVaccin{
 
     $selectVaccin->finish();
     $selectAnimaux->finish();
-    $dbh->disconnect();
 }
 
 
 sub afficheChat{
-
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     print "Voici la liste de tous les chats enregistrés\n";
     my $selectChat = $dbh->prepare("SELECT * FROM Animal, Suivie WHERE Animal.IdAnimal = Suivie.IdAnimal AND TypeAnimal = 'Chat'");
     my $requete = $selectChat->execute();
@@ -216,15 +198,11 @@ sub afficheChat{
     }
 
     $selectChat->finish();
-    $dbh->disconnect();
-
 }
 
 
 
 sub afficheSelectionUtilisateur{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-
     my $t = Time::Piece->new();
     my $anneeActuelle=$t->year;
     print "Voici la liste de tous les types d'animaux enregistres\n";
@@ -250,13 +228,10 @@ sub afficheSelectionUtilisateur{
     
     $selectType->finish();
     $selection->finish();
-    $dbh->disconnect();
-    
 }
 
 
 sub afficheMoyenneAnimaux{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     my $selectMoyenne = $dbh->prepare("
 SELECT(NbAnimaux/NbProprio) AS NbMoyen 
 FROM (SELECT COUNT(*) AS NbProprio FROM Proprietaire) AS table1,
@@ -270,27 +245,23 @@ while(my $ref = $selectMoyenne->fetchrow_hashref()){  # affiche résulat de la r
     print "\n";
         
     $selectMoyenne->finish();
-    $dbh->disconnect();
-    
 }
 
 
 sub afficheSuperieurAnimaux{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    
     print "Voici les propriétaires qui ont plus de 3 animaux\n";
     my $selectSuperieur = $dbh->prepare("
-					SELECT nom, prenom
-					FROM(SELECT telephone FROM Animal
-					GROUP BY telephone
-					HAVING COUNT(*) > 3
-					) AS table1,
-					(SELECT DISTINCT nom, prenom, telephone
-					FROM Proprietaire
-					GROUP BY nom, prenom, telephone
-					) AS table2
-					WHERE table1.telephone=table2.telephone
-					");
+SELECT nom, prenom
+FROM(SELECT telephone FROM Animal
+GROUP BY telephone
+HAVING COUNT(*) > 3
+) AS table1,
+(SELECT DISTINCT nom, prenom, telephone
+FROM Proprietaire
+GROUP BY nom, prenom, telephone
+) AS table2
+WHERE table1.telephone=table2.telephone
+    ");
     my $requete = $selectSuperieur->execute();
     while(my $ref = $selectSuperieur->fetchrow_hashref()){  # affiche résulat de la requête SQL
 	print "$ref->{'prenom'} $ref->{'nom'}\n";
@@ -298,14 +269,10 @@ sub afficheSuperieurAnimaux{
     print "\n";
         
     $selectSuperieur->finish();
-    $dbh->disconnect();
-    
 }
 
 
 sub afficheCommuneProprio{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    
     my $selectSuperieur = $dbh->prepare(
 "
 SELECT DISTINCT Commune, NbProprio
@@ -327,11 +294,9 @@ WHERE Table1.CodePostal=Lieu.CodePostal
 
 
 sub afficheCommuneAnimaux{
-    my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    
-    my $vueanimal = $dbh->do("create view vueanimal as select count(*) as nbanimaux,telephone from animal group by telephone");
+    my $vueanimal = $dbh->do("CREATE VIEW vueanimal AS SELECT COUNT(*) AS nbanimaux,telephone FROM animal GROUP BY telephone");
 
-    my $vueproprio = $dbh->do("create view vue proprietaire as select sum(nbanimaux)as nbanimalcommune, codepostal from vueanimal, proprietaire where vueanimal.telephone = proprietaire.telephone group by codepostal");
+    my $vueproprio = $dbh->do("CREATE VIEW vueproprio AS SELECT SUM(nbanimaux) AS nbanimalcommune, codepostal FROM vueanimal, proprietaire WHERE vueanimal.telephone = proprietaire.telephone GROUP BY codepostal");
 
 
     my $selectAnimaux = $dbh->prepare("select distinct nbanimalcommune, commune from vueproprio, lieu where lieu.codepostal=vueproprietaire.codepostal");
@@ -343,14 +308,11 @@ sub afficheCommuneAnimaux{
 	print "Commune : $ref->{'commune'}  Nombre Animaux : $ref->{'nbanimalcommune'}\n";
     }
     print "\n";
-
     
     $dbh->do(drop view vueproprio);
     $dbh->do(drop view vueanimal);
 
     $selectAnimaux->finish();
-    $dbh->disconnect();
-    
 }
 
 $dbh->disconnect();

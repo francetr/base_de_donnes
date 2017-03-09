@@ -6,7 +6,7 @@ use Time::Piece;
 sub afficheSelectionUtilisateur{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
 
-    my $t = Time::Piece->new();
+my $t = Time::Piece->new();
     my $anneeActuelle=$t->year;
     print "Voici la liste de tous les types d'animaux enregistres\n";
     my $selectType = $dbh->prepare("SELECT DISTINCT TypeAnimal From Animal");
@@ -31,6 +31,7 @@ sub afficheSelectionUtilisateur{
     
     $selectType->finish();
     $selection->finish();
+
     $dbh->disconnect();
     
 }

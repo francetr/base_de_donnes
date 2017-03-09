@@ -6,8 +6,6 @@ use DBI;
 
 sub ajoutAnimal{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-
-    
     print "Entrer l' id de l'animal\n";
     my $id=<>; chomp($id);
     print "Entrer le nom de l'animal avec l'id $id\n";
@@ -35,7 +33,7 @@ sub ajoutAnimal{
     print "Le propriétaire est-il enregistré dans la base?(o/n)\n";
     my $rep2=<>; chomp($rep2);
     
-    if ($rep2="o" or $rep2="O"){
+    if ($rep2 eq "o" or $rep2 eq "O"){
 	print "Donner le nom du propriétaire de l'animal avec id $id\n";
 	$nomProprio=<>; chomp($nomProprio);
 	print "Donner le prénom du propriétaire de l'animal avec id $id\n";
@@ -44,13 +42,13 @@ sub ajoutAnimal{
 	my $selectTel = $dbh->prepare("SELECT DISTINCT Nom, Prenom, Telephone FROM Proprietaire WHERE Nom = '$nomProprio' AND Prenom='$prenomProprio'");
 	$telephone = $selectTel->execute();
 	while(my $ref= $selectTel->fetchrow_hashref()){
-	    print "Nom :  $ref->{'nom'}   Prenom : $ref->{'prenom'}  Telephone : $ref->{'telephone'}\n";
-	    $telephone=$ref->{'telephone'};
+	    print "Nom :  $ref->{'nom'}   Prénom : $ref->{'prenom'}  Téléphone : $ref->{'telephone'}\n";
+	    $telephone = $ref->{'telephone'};
 	}
 	$selectTel->finish();
     }
     
-    elsif($rep2="n" or $rep2="N"){
+    elsif($rep2 eq "n" or $rep2 eq "N"){
 	print "Donner le nom du propriétaire de l'animal avec l'id $id\n";
 	$nomProprio=<>; chomp($nomProprio);
 	print "Donner le prénom du propriétaire de l'animal avec l'id $id\n";
@@ -68,10 +66,9 @@ sub ajoutAnimal{
     print "Indiquer le numéros de téléphone du propriétaire de l'animal a l'$id\n";
     my $telephone=<>; chomp($telephone);
     my $requete = $dbh->do("INSERT INTO Animal VALUES($id,'$nom','$type','$sexe','$couleur','$sterilise',$anneeNaissance,$telephone)");
-    my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,$vaccin1,$vaccin2,$vaccin3)"); 
-
-    
+    my $requete2 = $dbh->do("INSERT INTO Suivie VALUES ($id,$vaccin1,$vaccin2,$vaccin3)");    
     print"Ajout d'animal effectué\n";
+
     $dbh->disconnect();
 }
 

@@ -4,6 +4,7 @@ use DBI;
 
 sub afficheMoyenneAnimaux{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
+    
     my $selectMoyenne = $dbh->prepare("
 SELECT(NbAnimaux/NbProprio) AS NbMoyen 
 FROM (SELECT COUNT(*) AS NbProprio FROM Proprietaire) AS table1,
@@ -17,6 +18,7 @@ while(my $ref = $selectMoyenne->fetchrow_hashref()){  # affiche résulat de la r
     print "\n";
         
     $selectMoyenne->finish();
+
     $dbh->disconnect();
     
 }

@@ -5,7 +5,8 @@ use DBI;
 sub afficheChat{
 
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    print "Voici la liste de tous les chats enregistrés\n";
+
+        print "Voici la liste de tous les chats enregistrés\n";
     my $selectChat = $dbh->prepare("SELECT * FROM Animal, Suivie WHERE Animal.IdAnimal = Suivie.IdAnimal AND TypeAnimal = 'Chat'");
     my $requete = $selectChat->execute();
 
@@ -15,6 +16,7 @@ sub afficheChat{
     }
 
     $selectChat->finish();
+    
     $dbh->disconnect();
 
 }

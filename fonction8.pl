@@ -4,8 +4,8 @@ use DBI;
 
 sub afficheCommuneProprio{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
-    
-    my $selectSuperieur = $dbh->prepare(
+
+my $selectSuperieur = $dbh->prepare(
 "
 SELECT DISTINCT Commune, NbProprio
 FROM (SELECT CodePostal, Count(*) AS NbProprio 

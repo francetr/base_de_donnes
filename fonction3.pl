@@ -8,7 +8,7 @@ sub ajoutVaccin{
 
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
 
-    print "Voici la liste des animaux enregistrés dans la base\n";
+print "Voici la liste des animaux enregistrés dans la base\n";
     my $selectAnimaux = $dbh->prepare("SELECT IdAnimal, NomAnimal, TypeAnimal FROM Animal\n");
     my $requete = $selectAnimaux->execute();
     while(my $ref=$selectAnimaux->fetchrow_hashref()){
@@ -23,17 +23,17 @@ sub ajoutVaccin{
     print "Quel vaccin voulez-vous modifier(1, 2 ou 3)?\n";
     my $rep=<>; chomp($rep);
     my $vaccin;
-    if ($rep == 1){
+    if ($rep eq 1){
 	print "Indiquer l'annee du vaccin1\n";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin1 = '$vaccin'");
     }
-    elsif ($rep == 2){
+    elsif ($rep eq 2){
 	print "Indiquer l'annee du vaccin2\n";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin2 = '$vaccin'");
     }
-    elsif ($rep ==3){
+    elsif ($rep eq3){
 	print "Indiquer l'annee du vaccin3";
 	$vaccin = <>; chomp($vaccin);
 	my $requete2 = $dbh->do("UPDATE Suivie SET Vaccin2 = '$vaccin'");
@@ -41,6 +41,7 @@ sub ajoutVaccin{
 
     $selectVaccin->finish();
     $selectAnimaux->finish();
+
     $dbh->disconnect();
 }
 
