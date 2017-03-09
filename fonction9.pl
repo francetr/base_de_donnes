@@ -24,7 +24,7 @@ sub afficheCommuneAnimaux{
     $dbh->do(drop view vueproprio);
     $dbh->do(drop view vueanimal);
 
-    $selectSuperieur->finish();
+    $selectAnimaux->finish();
     $dbh->disconnect();
     
 }
