@@ -6,9 +6,7 @@ sub afficheMoyenneAnimaux{
     my $dbh = DBI->connect("DBI:Pg:dbname=tfrances;host=dbserver","tfrances", "", {'RaiseError' => 1});
     
     my $selectMoyenne = $dbh->prepare("
-SELECT(NbAnimaux/NbProprio) AS NbMoyen 
-FROM (SELECT COUNT(*) AS NbProprio FROM Proprietaire) AS table1,
-(SELECT COUNT(*) AS NbAnimaux FROM Animal) AS table2
+    SELECT AVG(NbAnimaux) as NbMoyen FROM (SELECT COUNT(*) AS NbAnimaux, Telephone From Animal GROUP BY Telephone) AS table1
     ");
     my $requete = $selectMoyenne->execute();
     
