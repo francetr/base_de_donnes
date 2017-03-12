@@ -175,8 +175,9 @@ sub ajoutNaissance{
     print "Entrer la date de naissance de l'animal\n";
     my $t = Time::Piece->new();
     my $anneeActuelle=$t->year;
+
     my $anneeNaissance = <>; chomp($anneeNaissance);
-    while($anneeNaissance =~/\D/ || $anneeNaissance > $anneeActuelle || $anneeNaissance !~/^20\d{2}$/ && $anneeNaissance !~/^19\d{2}$/)
+    while($anneeNaissance =~/\D/ || $anneeNaissance gt $anneeActuelle || $anneeNaissance !~/^20\d{2}$/ && $anneeNaissance !~/^19\d{2}$/)
 {
 	print "Entrer la date de naissance de l'animal\n";
 	$anneeNaissance = <>; chomp($anneeNaissance);	
@@ -190,7 +191,8 @@ sub ajoutVaccin1{
     my $anneeActuelle=$t->year;    
     print "Indiquer l'année ou l'animal à reçu le vaccin1 (0 sinon)\n";
     my $vaccin1 = <>; chomp($vaccin1);
-    while($vaccin1 =~/\D/ || $vaccin1 =~/^[^0]+/ && (length($vaccin1) != length($an) || $vaccin1 < $an || $vaccin1 > $anneeActuelle)){
+    while($vaccin1 =~/\D/ || $vaccin1 =~/^[^0]+/ && (length($vaccin1) ne length($an) || $vaccin1 lt $an || $vaccin1 gt $anneeActuelle)
+){
 	print "Indiquer l'année ou l'animal à reçu le vaccin1 (0 sinon)\n";
 	$vaccin1 = <>; chomp($vaccin1);
     }
@@ -199,9 +201,12 @@ sub ajoutVaccin1{
 
 sub ajoutVaccin2{
     my($an) = @_;
+    my $t = Time::Piece->new();
+    my $anneeActuelle=$t->year;  
     print "Indiquer l'année ou l'animal à reçu le vaccin2 (0 sinon)\n";
     my $vaccin2 = <>; chomp($vaccin2);
-    while($vaccin2 =~/\D/ || $vaccin2 =~/^[^0]+/ && (length($vaccin2) != length($an) || $vaccin2 < $an || $vaccin2 > $anneeActuelle)){
+    while($vaccin2 =~/\D/ || $vaccin2 =~/^[^0]+/ && (length($vaccin2) ne length($an) || $vaccin2 lt $an || $vaccin2 gt $anneeActuelle)
+){
 	print "Indiquer l'année ou l'animal à reçu le vaccin2 (0 sinon)\n";
 	$vaccin2 = <>; chomp($vaccin2);
     }
@@ -210,9 +215,12 @@ sub ajoutVaccin2{
 
 sub ajoutVaccin3{
     my($an) = @_;
+    my $t = Time::Piece->new();
+    my $anneeActuelle=$t->year;  
     print "Indiquer l'année ou l'animal à reçu le vaccin3 (0 sinon)\n";
     my $vaccin3 = <>; chomp($vaccin3);
-    while($vaccin3 =~/\D/ || $vaccin3 =~/^[^0]+/ && (length($vaccin3) != length($an) || $vaccin3 < $an || $vaccin3 > $anneeActuelle)){
+    while($vaccin3 =~/\D/ || $vaccin3 =~/^[^0]+/ && (length($vaccin3) ne length($an) || $vaccin3 lt $an || $vaccin3 gt $anneeActuelle)
+){
 	print "Indiquer l'année ou l'animal à reçu le vaccin3 (0 sinon)\n";
 	$vaccin3 = <>; chomp($vaccin3);
     }
@@ -283,7 +291,7 @@ sub ajoutCommune{
 sub ajoutNbHabitantsCommune{
     print "Entrer le nombre d'habitants de la commune du propriétaire de l'animal\n";
     my $nbHabitantsCommune = <>; chomp($nbHabitantsCommune);
-    while($nbHabitantsCommune =~/\D/ || $nbHabitantsCommune<=0){
+    while($nbHabitantsCommune =~/\D/ || $nbHabitantsCommune le 0){
 	print "Entrer le nombre d'habitants de la commune du propriétaire de l'animal\n";
 	$nbHabitantsCommune = <>; chomp($nbHabitantsCommune);	
     }
