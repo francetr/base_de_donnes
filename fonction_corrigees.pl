@@ -64,7 +64,7 @@ sub ajoutVaccin3{
 sub ajoutCodePostal{
     print "Entrer le numéros de code postal du propriétaire de l'animal\n";
     my $codePostal = <>; chomp($codePostal);
-    while($codePostal =~/\D/ || $codePostal !~/^\d{5,6}$/){
+    while($codePostal =~/\D/ || $codePostal !~/^\d{5}$/){
 	print "Entrer le numéros de code postal du propriétaire de l'animal\n";
 	$codePostal = <>; chomp($codePostal);	
     }
@@ -79,4 +79,13 @@ sub ajoutNbHabitantsCommune{
 	$nbHabitantsCommune = <>; chomp($nbHabitantsCommune);	
     }
     return $nbHabitantsCommune;
+}
+
+sub ajoutCodeDepartement{
+    my ($cp)=@_;
+    my $codeDepartement;
+    if ($cp=~/^(\d{2})(\d{3})$/){
+	$codeDepartement = $1;
+    }
+    return $codeDepartement;
 }

@@ -270,7 +270,7 @@ sub ajoutRue{
 sub ajoutCodePostal{
     print "Entrer le numéros de code postal du propriétaire de l'animal\n";
     my $codePostal = <>; chomp($codePostal);
-    while($codePostal =~/\D/ || $codePostal !~/^\d{5,6}$/){
+    while($codePostal =~/\D/ || $codePostal !~/^\d{5}$/){
 	print "Entrer le numéros de code postal du propriétaire de l'animal\n";
 	$codePostal = <>; chomp($codePostal);	
     }
@@ -287,7 +287,6 @@ sub ajoutCommune{
     return $commune;
 }
 
-
 sub ajoutNbHabitantsCommune{
     print "Entrer le nombre d'habitants de la commune du propriétaire de l'animal\n";
     my $nbHabitantsCommune = <>; chomp($nbHabitantsCommune);
@@ -302,9 +301,6 @@ sub ajoutCodeDepartement{
     my ($cp)=@_;
     my $codeDepartement;
     if ($cp=~/^(\d{2})(\d{3})$/){
-	$codeDepartement = $1;
-    }
-    elsif($cp=~/^(\d{3})(\d{3})$/){
 	$codeDepartement = $1;
     }
     return $codeDepartement;
